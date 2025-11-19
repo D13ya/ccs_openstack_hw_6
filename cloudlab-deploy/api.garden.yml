@@ -1,0 +1,21 @@
+kind: Deploy
+description: API backend service
+type: helm
+name: api
+dependencies:
+  - build.api-image
+  - deploy.redis
+spec:
+  chart:
+    path: ../garden/examples/vote-helm/base-chart/
+  values:
+    name: api
+    image:
+      repository: ${actions.build.api-image.outputs.deployment-image-name}
+      tag: ${actions.build.api-image.version}
+    service:
+      type: ClusterIP
+      port: 80
+    ingress:
+      enabled: false
+    healthCheckPath: /api

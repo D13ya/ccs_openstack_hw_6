@@ -1,0 +1,6 @@
+kind: Build
+description: The voting UI container image
+name: vote-image
+type: container
+source:
+  path: ../garden/examples/vote-helm/vote-image

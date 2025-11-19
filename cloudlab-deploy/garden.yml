@@ -1,0 +1,17 @@
+apiVersion: garden.io/v2
+kind: Project
+name: vote-cloudlab
+defaultEnvironment: cloudlab
+
+environments:
+  - name: cloudlab
+
+providers:
+  - name: kubernetes
+    environments: [cloudlab]
+    # Update this with your actual cluster context name
+    # Run: kubectl config get-contexts
+    # Common context names: kubernetes-admin@kubernetes or k8s-cluster
+    context: kubernetes-admin@kubernetes
+    namespace: default
+    buildMode: local-docker

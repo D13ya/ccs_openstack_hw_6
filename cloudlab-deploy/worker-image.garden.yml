@@ -1,0 +1,6 @@
+kind: Build
+description: Worker background processor image
+name: worker-image
+type: container
+source:
+  path: ../garden/examples/vote-helm/worker-image

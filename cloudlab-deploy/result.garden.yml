@@ -1,0 +1,20 @@
+kind: Deploy
+description: Results display UI
+type: helm
+name: result
+dependencies:
+  - build.result-image
+  - run.db-init
+spec:
+  chart:
+    path: ../garden/examples/vote-helm/base-chart/
+  values:
+    name: result
+    image:
+      repository: ${actions.build.result-image.outputs.deployment-image-name}
+      tag: ${actions.build.result-image.version}
+    service:
+      type: NodePort
+      nodePort: 30081
+    ingress:
+      enabled: false

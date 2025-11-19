@@ -1,0 +1,17 @@
+kind: Deploy
+description: Redis cache service
+type: helm
+name: redis
+spec:
+  chart:
+    name: redis
+    repo: https://charts.bitnami.com/bitnami
+    version: "16.13.1"
+  values:
+    auth:
+      enabled: false
+    image:
+      repository: bitnamilegacy/redis
+    kubectl:
+      image:
+        repository: bitnamilegacy/kubectl

@@ -1,0 +1,19 @@
+kind: Deploy
+description: Voting frontend UI
+type: helm
+name: vote
+dependencies:
+  - build.vote-image
+  - deploy.api
+spec:
+  chart:
+    path: ../garden/examples/vote-helm/vote/
+  values:
+    image:
+      repository: ${actions.build.vote-image.outputs.deployment-image-name}
+      tag: ${actions.build.vote-image.version}
+    service:
+      type: NodePort
+      nodePort: 30080
+    ingress:
+      enabled: false

@@ -1,0 +1,15 @@
+kind: Deploy
+description: Worker background processor
+type: helm
+name: worker-deploy
+dependencies:
+  - build.worker-image
+  - deploy.redis
+  - deploy.db
+spec:
+  chart:
+    path: ../garden/examples/vote-helm/worker/
+  values:
+    image:
+      repository: ${actions.build.worker-image.outputs.deployment-image-name}
+      tag: ${actions.build.worker-image.version}

@@ -1,0 +1,6 @@
+kind: Build
+description: API backend image
+name: api-image
+type: container
+source:
+  path: ../garden/examples/vote-helm/api-image

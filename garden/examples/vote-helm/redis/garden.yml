@@ -1,0 +1,18 @@
+kind: Deploy
+description: Redis service for queueing votes before they are aggregated
+type: helm
+name: redis
+spec:
+  chart:
+    name: redis
+    repo: https://charts.bitnami.com/bitnami
+    version: "16.13.1"
+  values:
+    auth:
+      enabled: false
+    # hrmpf (https://github.com/bitnami/containers/issues/83267)
+    image:
+      repository: bitnamilegacy/redis
+    kubectl:
+      image:
+        repository: bitnamilegacy/kubectl

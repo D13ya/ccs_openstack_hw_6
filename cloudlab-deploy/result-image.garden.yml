@@ -1,0 +1,6 @@
+kind: Build
+description: Result UI image
+name: result-image
+type: container
+source:
+  path: ../garden/examples/vote-helm/result-image
