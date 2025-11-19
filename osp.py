@@ -116,8 +116,8 @@ pc.defineParameter(
 pc.defineParameter(
     "hwType", "Hardware Type",
     portal.ParameterType.NODETYPE,
-    "d430", # Default to d430 nodes.
-    longDescription="Specify a hardware type for all nodes. Clear Selection for any available type."
+    "", # Empty = CloudLab chooses best available type
+    longDescription="Specify a hardware type for all nodes. Leave empty for CloudLab to choose best available type."
 )
 
 # Parameter for the number of compute nodes.
@@ -126,7 +126,7 @@ pc.defineParameter(
     "computeNodeCount", "Number of Compute Nodes",
     portal.ParameterType.INTEGER,
     2,
-    longDescription="The number of OpenStack compute nodes to provision. Total number of nodes will be n+1 (including controller node). Recommended: 2 or more. Try increasing this if Kubernetes Cluster creation fails due to insufficient resources."
+    longDescription="The number of OpenStack compute nodes to provision. Total number of nodes will be n+1 (including controller node). Recommended: 2 for c220g1 hardware. Try increasing this if Kubernetes Cluster creation fails due to insufficient resources."
 )
 
 # Parameters for OpenStack authentication.

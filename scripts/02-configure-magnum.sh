@@ -63,21 +63,24 @@ fi
 # --- Create Magnum Cluster Template ---
 # A Cluster Template defines the parameters for creating a Kubernetes cluster.[29]
 # This allows for consistent cluster deployments.
+# Optimized for c220g1 hardware (16 cores, 128GB RAM, SSD)
 TEMPLATE_NAME="k8s-default-template"
 if openstack coe cluster template show "${TEMPLATE_NAME}" >/dev/null 2>&1; then
     echo "Cluster template '${TEMPLATE_NAME}' already exists. Skipping creation."
 else
     echo "Creating Magnum Cluster Template for Kubernetes..."
+    echo "Optimized for c220g1: Using m1.medium flavors for voting app workload"
     openstack coe cluster template create "${TEMPLATE_NAME}" \
         --image "$K8S_IMAGE_NAME" \
         --keypair "${KEYPAIR_NAME}" \
         --external-network public \
         --dns-nameserver 8.8.8.8 \
-        --master-flavor m1.small \
-        --flavor m1.small \
-        --docker-volume-size 20 \
+        --master-flavor m1.medium \
+        --flavor m1.medium \
+        --docker-volume-size 25 \
         --network-driver calico \
-        --coe kubernetes
+        --coe kubernetes \
+        --labels kube_tag=v1.28.2,container_runtime=containerd,cloud_provider_enabled=false
 fi
 
 # --- Verification ---

@@ -2,6 +2,26 @@
 
 A CloudLab profile for deploying OpenStack with Kubernetes (via Magnum) and a sample voting application using Garden.
 
+## 📚 Homework Documentation
+
+This repository contains the complete homework submission for **Cloud Computing Security - Homework 6**.
+
+### Homework Parts
+
+| Part | Document | Description |
+|------|----------|-------------|
+| **Part 1** | [PART1_Application_Overview_and_Deployment.md](PART1_Application_Overview_and_Deployment.md) | Application use-case, deployment setup, architecture diagrams |
+| **Part 2** | [PART2_Security_Configuration_and_Best_Practices.md](PART2_Security_Configuration_and_Best_Practices.md) | Security measures, configuration snippets, misconfiguration avoidance |
+| **Part 3** | [PART3_Security_Analysis.md](PART3_Security_Analysis.md) | Security tools, vulnerability findings, penetration testing results |
+
+### Security Scripts
+
+All security assessment tools and scripts are in the [`security-scripts/`](security-scripts/) directory:
+
+- **[README.md](security-scripts/README.md)** - Complete documentation
+- **[QUICK_START.md](security-scripts/QUICK_START.md)** - Quick start guide
+- **Automated scripts** for running comprehensive security assessments
+
 ## Repository Structure
 
 ```
@@ -14,9 +34,22 @@ ccs_openstack_hw_6/
 │   ├── garden.yml
 │   ├── *.garden.yml (modules)
 │   └── *.md (documentation)
-└── garden/
-    └── examples/
-        └── vote-helm/          # Voting app source code
+├── garden/
+│   └── examples/
+│       └── vote-helm/          # Voting app source code
+├── security-scripts/           # Security assessment tools
+│   ├── 00-install-tools.sh
+│   ├── 01-network-scanning.sh
+│   ├── 03-kubernetes-security.sh
+│   ├── 04-container-security.sh
+│   ├── 05-web-application-security.sh
+│   ├── run-all-scans.sh
+│   ├── README.md
+│   └── QUICK_START.md
+├── PART1_Application_Overview_and_Deployment.md
+├── PART2_Security_Configuration_and_Best_Practices.md
+├── PART3_Security_Analysis.md
+└── README.md                   # This file
 ```
 
 ## Quick Start
@@ -140,6 +173,19 @@ See `cloudlab-deploy/` directory for comprehensive documentation:
 - No TLS/HTTPS
 - Default passwords should be changed for real use
 
+## 🔒 Security Assessment
+
+To run the comprehensive security assessment:
+
+```bash
+cd security-scripts
+sudo ./00-install-tools.sh              # Install tools (once)
+export WORKER_NODE_IP="<your-ip>"       # Set your node IP
+./run-all-scans.sh                      # Run all scans
+```
+
+See [security-scripts/QUICK_START.md](security-scripts/QUICK_START.md) for detailed instructions.
+
 ## Troubleshooting
 
 If you encounter issues:
@@ -148,6 +194,12 @@ If you encounter issues:
 2. Review `/tmp/install-openstack.log` on controller
 3. Review `/tmp/configure-magnum.log` on controller
 4. See `cloudlab-deploy/TROUBLESHOOTING.md` for detailed help
+
+### Security Scripts Issues
+
+- **kubectl not configured**: Run `openstack coe cluster config k8s-cluster`
+- **Docker permission denied**: Run `sudo usermod -aG docker $USER && newgrp docker`
+- **Tool not found**: Rerun `sudo ./00-install-tools.sh`
 
 ## License
 
