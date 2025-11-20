@@ -89,7 +89,7 @@ else
         --docker-volume-size 25 \
         --network-driver calico \
         --coe kubernetes \
-        --labels kube_tag=v1.28.11,container_runtime=containerd,cloud_provider_enabled=false,container_infra_prefix=registry.k8s.io/
+        --labels kube_tag=v1.27.16,container_runtime=containerd,cloud_provider_enabled=false,container_infra_prefix=docker.io/rancher/
 fi
 
 # --- Verification ---
