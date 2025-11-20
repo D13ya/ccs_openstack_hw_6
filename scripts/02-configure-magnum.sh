@@ -29,17 +29,26 @@ if [[ -z "$K8S_IMAGE_NAME" ]]; then
         echo "Using pre-existing image: $K8S_IMAGE_NAME"
     else
         echo "No suitable image found. Downloading Fedora CoreOS for Magnum..."
-        FCOS_VERSION="39.20231123.3.0"
+        # Using newer stable version (40.x) for better kubectl compatibility
+        FCOS_VERSION="40.20240906.3.0"
         FCOS_BASENAME="fedora-coreos-${FCOS_VERSION}-openstack.x86_64.qcow2"
         FCOS_URL="https://builds.coreos.fedoraproject.org/prod/streams/stable/builds/${FCOS_VERSION}/x86_64/${FCOS_BASENAME}.xz"
         WORKDIR="/tmp/magnum-images"
         mkdir -p "${WORKDIR}"
-        curl -L --retry 5 --retry-delay 5 -o "${WORKDIR}/${FCOS_BASENAME}.xz" "${FCOS_URL}"
+        echo "Downloading from: ${FCOS_URL}"
+        curl -L --retry 5 --retry-delay 5 -o "${WORKDIR}/${FCOS_BASENAME}.xz" "${FCOS_URL}" || {
+            echo "WARNING: Download failed. Trying alternate stable version..."
+            FCOS_VERSION="40.20240728.3.0"
+            FCOS_BASENAME="fedora-coreos-${FCOS_VERSION}-openstack.x86_64.qcow2"
+            FCOS_URL="https://builds.coreos.fedoraproject.org/prod/streams/stable/builds/${FCOS_VERSION}/x86_64/${FCOS_BASENAME}.xz"
+            curl -L --retry 5 --retry-delay 5 -o "${WORKDIR}/${FCOS_BASENAME}.xz" "${FCOS_URL}"
+        }
         xz -d -f "${WORKDIR}/${FCOS_BASENAME}.xz"
         openstack image create fedora-coreos-magnum \
             --disk-format qcow2 \
             --container-format bare \
             --public \
+            --property os_distro=fedora-coreos \
             --file "${WORKDIR}/${FCOS_BASENAME}"
         K8S_IMAGE_NAME="fedora-coreos-magnum"
         echo "Uploaded image: ${K8S_IMAGE_NAME}"
@@ -80,7 +89,7 @@ else
         --docker-volume-size 25 \
         --network-driver calico \
         --coe kubernetes \
-        --labels kube_tag=v1.28.2,container_runtime=containerd,cloud_provider_enabled=false
+        --labels kube_tag=v1.28.11,container_runtime=containerd,cloud_provider_enabled=false,container_infra_prefix=registry.k8s.io/
 fi
 
 # --- Verification ---
